@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Department of Cardiology</title>
+        <link rel="stylesheet" href="/HMS_S/static/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+        crossorigin="anonymous">
+
+        <style>
+            .headings{
+                padding: 15px;
+            }  
+        </style>
+    </head>
+
+    <body>
+        <div id="main">
+            <div id="canvas">
+
+                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Department of Cardiology</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">History</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="patient_dash.html">Back</a>
+                                </li>
+                            </ul>
+                            
+                            <form class="d-flex" role="search">
+                                <input class="form-control me-2" type="search" placeholder="doctor, department" aria-label="Search"/>
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+
+                <div id="content">
+                    <div class="container my-5">
+
+                        <div id="information" class="mb-5">
+                            <h2 class="mb-3">Department of Cardiology</h2>
+                            <p class="lead">
+                                The Department of Cardiology specializes in the diagnosis and treatment of heart-related conditions.
+                                Our team is dedicated to providing state-of-the-art care, ranging from preventive screenings to
+                                advanced cardiac surgeries. We focus on patient-centered care with modern facilities and expert staff.
+                            </p>
+
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="m-0 me-2">Our Doctors</h4>
+                            <a href="/">View all</a>
+                        </div>
+
+                        <table class="table table-sm border">
+                            <tr>
+                                <td>Mr. Smith</td>
+                                <td class="text-center">
+                                    <a href="#" class="btn btn-success btn-sm">view details</a>
+                                    <a href="#" class="btn btn-success btn-sm">check avalability</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mrs. Gosh</td>
+                                <td class="text-center">
+                                    <a href="#" class="btn btn-success btn-sm">view details</a>
+                                    <a href="#" class="btn btn-success btn-sm">check avalability</a>
+                                </td>
+                            </tr>
+                        </table>
+
+                </div>
+
+                
+            
+            </div>
+        </div>
+    </body>
+</html>
