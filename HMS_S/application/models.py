@@ -50,10 +50,10 @@ class Appointment(db.Model):
     appointment_id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String() , nullable=False)
     time = db.Column(db.String(), nullable=False)
-    status = db.Column(db.String(), default='Booked', nullable=False)
+    status = db.Column(db.String(), default='Upcoming', nullable=False)
     doctor_id = db.Column(db.Integer, db.ForeignKey('Doctor.doctor_id'))   #foreignkey
     patent_id = db.Column(db.Integer, db.ForeignKey('Patient.patient_id'))  #foreignkey
-    treatment = db.Column(db.Integer, db.ForeignKey('Treatment.treatment_id'))  #foreignkey
+    # treatment = db.Column(db.Integer, db.ForeignKey('Treatment.treatment_id'))  #foreignkey
 
 class Treatment(db.Model):
     __tablename__ = "Treatment"
@@ -61,12 +61,19 @@ class Treatment(db.Model):
     diagnosis = db.Column(db.String(), nullable=False)
     prescription = db.Column(db.String(), nullable=False)
     status = db.Column(db.String(), nullable=False, default='Active')  #Active/Discharged
-    # test_reports = 
+    test_reports = db.Column(db.String(), nullable=True)
     doctor_id = db.Column(db.Integer, db.ForeignKey('Doctor.doctor_id'))  #foerignkey
     patient_id = db.Column(db.Integer, db.ForeignKey('Patient.patient_id')) #foreignkey
+    appointment_id = db.Column(db.Integer, db.ForeignKey('Appointment.appointment_id'))   #Foreign key
     appointment = db.relationship('Appointment', backref='treatments', lazy=True)  #relationship
 
-
+class Availability(db.Model):
+    __tablename__ = "Availability"
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('Doctor.doctor_id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    slot = db.Column(db.String(), nullable=False)  # 'Morning' or 'Evening'
+    doctor = db.relationship('Doctor', backref='availabilities')   #relationship
 
 
 

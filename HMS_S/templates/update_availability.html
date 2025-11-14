@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Patient History</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+        crossorigin="anonymous">
+        <style>
+            #canvas {
+                padding: 20px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="main" style="height: auto;">
+            <div id="canvas">
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}    
+                    {% if messages %}
+                        {% for category, msg in messages %}
+                        <div class="alert alert-{{ category }} py-1 px-2 mt-2">
+                            {{ msg }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <!-- <h3>Provide Your Availability, Dr. {{ doctor.name }}</h3> <br> -->
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="headings">Provide Your Availability, Dr. {{ doctor.name }}</h3>
+                        <a href="/doctor/{{doctor.doctor_id}}">go back</a>
+                    </div> <br>
+
+                    <form method="POST">
+                        <table  class="table table-sm" border="1" cellpadding="10">
+                            <thead>
+                                <tr class="">
+                                    <th>Date</th>
+                                    <!-- {% for slot in time_options %}
+                                    <th>{{ slot }}</th>
+                                    {% endfor %} -->
+                                    <th>Slot</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in next_seven_days %}
+                                <tr>
+                                    <td>{{ d.strftime('%A, %d %B %Y') }}</td>
+
+                                    {% for slot in time_options %}
+                                    <!-- <td>
+                                        <input type="checkbox" name="{{ d }}" value="{{ slot }}"
+                                        {% if existing.get(d) == slot %}checked{% endif %}>
+                                    </td> -->
+
+                                    <td>
+                                        <input type="radio" name="{{ d }}" id="{{ d }}-{{ loop.index }}" 
+                                        value="{{ slot }}" class="slot-radio"
+                                        {% if existing.get(d) == slot %}checked{% endif %}
+                                        >
+
+                                        <label for="{{ d }}-{{ loop.index }}" class="slot-label">
+                                            {{ slot }}
+                                        </label>
+                                    </td>
+
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <br>
+                        <input type="submit" class="btn btn-primary" value="Save Availability"> <br><br>
+                    </form>
+                    
+            </div>
+            
+        </div>
+    </body>
+</html>

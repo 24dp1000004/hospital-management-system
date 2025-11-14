@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Patient History</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+        crossorigin="anonymous">
+        <style>
+            #canvas {
+                padding: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div id="canvas">
+                
+                <!-- <h2>Patient History</h2> <br> -->
+                 <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="headings">Patient History</h3>
+                        <a href="/doctor/{{appoint.doctor_id}}">go back</a>
+                </div> <br>
+
+                <ul class="list-unstyled">
+                    <li>Patient Name: {{appoint.patient.name}}</li>
+                    <li>Date: {{appoint.date}}</li>
+                    <li>Doctor: {{appoint.doctor.name}}</li>
+                    <li>Department: {{appoint.doctor.department}}</li>
+                </ul>
+                
+                <h5>Diagnosis</h5>
+                <p>{{treatment.diagnosis}}</p>
+
+                <h5>Prescription</h5>
+                <p>{{treatment.prescription}}</p>
+
+                <h5>Test done</h5>
+                <p>{{treatment.test_reports}}</p>
+            </div>
+        </div>
+    </body>
+</html>

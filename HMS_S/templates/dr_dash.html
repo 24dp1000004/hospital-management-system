@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <title>Doctor Dashboard</title>
-        <link rel="stylesheet" href="/HMS_S/static/style.css">
+        <link rel="stylesheet" href="/static/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
         crossorigin="anonymous">
@@ -10,7 +10,10 @@
         <style>
             .headings{
                 padding: 15px;
-
+            }
+            #canvas{
+                padding: 20px;
+                height: auto;
             }
             
         </style>
@@ -23,7 +26,7 @@
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="/doctor">Welcome Dr. abcd</a>
+                        <a class="navbar-brand" href="#">Welcome Dr. {{this_doctor.name}}</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -47,25 +50,26 @@
                         <table class="table border">
                             <thead>
                                 <tr>
-                                    <th scope="col">PRN</th>
+                                    <th scope="col">Appointment id</th>
                                     <th scope="col">Patient Name</th>
                                     <th scope="col">Patient History</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for ap in appoint %}
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>Miss. Yele</td>
+                                    <th scope="row">{{ ap.appointment_id }}</th>
+                                    <td>{{ ap.patient.name }}</td>
                                     <td>
-                                        <a href="update_ph.html" class="btn btn-secondary btn-sm" type="submit">update</a>
+                                        <a href="/update_patient_history/{{ap.appointment_id}}" class="btn btn-secondary btn-sm" >update</a>
                                     </td>
                                     <td>
-                                        <a href="/" class="btn btn-success btn-sm"> Completed </a>
-                                        <a href="/" class="btn btn-danger btn-sm"> Cancel </a>
+                                        <a href="/complete_appoint/{{ap.appointment_id}}" class="btn btn-success btn-sm"> Completed </a>
+                                        <a href="/cancel_appoint/{{ap.appointment_id}}" class="btn btn-danger btn-sm"> Cancel </a>
                                     </td>
                                 </tr>
-                                
+                                {% endfor %}
                                 
                                 
                             </tbody>
@@ -75,37 +79,23 @@
                     <h3 class="headings"> Assigned Patients</h3>
 
                     <div id="table">
-                        <table class="table border
-                            <thead>
+                        <table class="table border">
+                                {% for patient in assigned_patients %}
+                                {% if patient.status == "Active" %}
                                 <tr>
-                                    <th>Patient Name</th>
-                                    <th class="text-end"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>John Doe</td>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ patient.name }}</td>
                                     <td class="text-end">
-                                        <a href="#" class="btn btn-info btn-sm">View</a>
+                                        <a href="/view_patient_history/{{patient.patient_id}}" class="btn btn-info btn-sm">View</a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Jane Smith</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-info btn-sm">View</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Michael Brown</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-info btn-sm">View</a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                {% endif %}
+                                {% endfor %}
+                            
                         </table> <br>
 
                         <div class="text-end">
-                            <a href="#" class="btn btn-warning"> Provide Avalability</a>
+                            <a href="/doctor/{{this_doctor.doctor_id}}/availability" class="btn btn-warning"> Provide Availability</a>
                         </div>
 
                     </div>
