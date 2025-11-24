@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect, flash, url_for
+from flask import Flask,render_template,request,redirect, flash, url_for , session
 from datetime import date, timedelta
 from flask import current_app as app
 from .models import *
@@ -26,7 +26,7 @@ def login():
          #for Patient    
         patient = Patient.query.filter_by(username=username).first()
         if patient and patient.password == password:
-            return render_template('patient_dash.html')
+            return redirect(f'/patient/{patient.patient_id}')
         elif patient:
             return render_template('invalid_pwd.html')
 
@@ -65,15 +65,17 @@ def admin():
 @app.route('/doctor/<int:dr_id>' , methods=['GET'])
 def doctor(dr_id):
     this_doctor =Doctor.query.filter_by(doctor_id=dr_id).first()
-    appoint = Appointment.query.filter_by(doctor_id=dr_id, status="Upcoming").all()
+    appoint = Appointment.query.filter_by(doctor_id=dr_id).order_by(Appointment.date.asc(), Appointment.time.asc()).all()
     assigned_patients = Patient.query.filter_by(consultant=dr_id).all()
     return render_template('dr_dash.html', this_doctor=this_doctor, appoint=appoint, assigned_patients=assigned_patients)
 
-@app.route('/patient/<int:pat_id>')
+@app.route('/patient/<int:pat_id>', methods=['GET']) 
 def patient(pat_id):
     this_patient = Patient.query.filter_by(patient_id=pat_id).first()
+    departments = Department.query.all()
+    appoint = Appointment.query.filter_by(patient_id=pat_id).all()
 
-    return render_template('patient_dash.html')
+    return render_template('patient_dash.html', this_patient=this_patient, departments=departments, appoint=appoint)
 
 @app.route("/update_patient_history/<int:appoint_id>", methods=['GET', 'POST'])
 def update_patient_history(appoint_id):
@@ -82,8 +84,9 @@ def update_patient_history(appoint_id):
         diag = request.form.get('diag')
         test = request.form.get('test')
         pres = request.form.get('pres')
-        new_treatment = Treatment(appointment_id=appoint_id, diagnosis=diag, test_reports=test, prescription=pres)
+        new_treatment = Treatment(appointment_id=appoint_id, diagnosis=diag, test_reports=test, prescription=pres, patient_id=appoint.patient_id, doctor_id=appoint.doctor_id)
         db.session.add(new_treatment)
+        appoint.status = "Updated"
         db.session.commit()
         return redirect(url_for('view_patient_history',appoint_id=appoint_id))
     return render_template('update_ph.html', appoint=appoint)
@@ -92,7 +95,12 @@ def update_patient_history(appoint_id):
 def view_patient_history(appoint_id):
     appoint = Appointment.query.filter_by(appointment_id=appoint_id).first()
     treatment = Treatment.query.filter_by(appointment_id=appoint_id).first()
-    return render_template('view_ph.html', appoint=appoint, treatment=treatment)
+    viewer = None
+    if 'doctor_id' in session:
+        viewer = "doctor"
+    elif 'patient_id' in session:
+        viewer = "patient"    
+    return render_template('view_ph.html', appoint=appoint, treatment=treatment, viewer=viewer)
 
 
 @app.route('/doctor/<int:doctor_id>/availability', methods=['GET', 'POST'])
@@ -131,13 +139,127 @@ def doctor_availability(doctor_id):
 def complete_appoint(appoint_id):
     appoint = Appointment.query.filter_by(appointment_id=appoint_id).first()
     appoint.status = "Completed"
+    appoint.patient.status = "Active" 
+    appoint.patient.consultant = appoint.doctor_id
     db.session.commit()
     return redirect(url_for('doctor', dr_id=appoint.doctor_id))
 
-@app.route('/cancel_appoint/<int:appoint_id>')
+@app.route('/cancel_appoint/<int:appoint_id>') 
 def cancel_appoint(appoint_id):
+    role = request.args.get('role')  #can be a doctor or patient to cance the appoint
     appoint = Appointment.query.filter_by(appointment_id=appoint_id).first()
     appoint.status = "Cancelled"
     db.session.commit()
 
-    return redirect(url_for('doctor', dr_id=appoint.doctor_id))
+    if role == 'patient':
+        return redirect(url_for('patient', pat_id=appoint.patient_id))
+    elif role == 'doctor':
+        return redirect(url_for('doctor', dr_id=appoint.doctor_id))
+
+@app.route('/patient/<int:pat_id>/department/<int:department_id>')     # department dash for PATIENT 
+def department(pat_id, department_id):
+    dept = Department.query.filter_by(department_id=department_id).first()
+    doctors = Doctor.query.filter_by(dept_id=department_id).all()
+    patient = Patient.query.filter_by(patient_id=pat_id).first()
+    return render_template('department_dash.html', dept=dept, doctors=doctors, department_id=department_id, patient=patient)
+
+@app.route('/patient/<int:pat_id>/department/<int:department_id>/<int:doctor_id>') 
+def view_dr_details(department_id,doctor_id, pat_id):
+    doctor = Doctor.query.filter_by(doctor_id=doctor_id).first()
+    patient = Patient.query.filter_by(patient_id=pat_id).first()
+    department = Department.query.filter_by(department_id=department_id).first()
+    return render_template('view_dr_details.html', doctor=doctor, department=department, patient=patient)
+
+@app.route('/patient/<int:pat_id>/view_availability/<int:doctor_id>',  methods=['GET', 'POST'])
+def view_doctor_availability( pat_id, doctor_id):
+    patient = Patient.query.filter_by(patient_id=pat_id).first()
+    doctor = Doctor.query.filter_by(doctor_id=doctor_id).first()
+    availability = Availability.query.filter_by(doctor_id=doctor_id).all()
+    doctor_time_options = {
+        1: ["12:00 pm - 2:00 pm", "5:30 pm - 7:30 pm"],
+        2: ["10:00 am - 12:00 pm", "4:00 pm - 6:00 pm"],
+        3: ["9:00 am - 11:00 am", "3:00 pm - 5:00 pm"],
+        4: ["8:00 am - 10:00 am", "2:00 pm - 4:00 pm"],
+        5: ["10:00 am - 12:00 pm", "4:00 pm - 6:00 pm"]
+    }
+
+    time_options = doctor_time_options.get(doctor_id)
+    # Next 7 days
+    today = date.today()
+    next_seven_days = [today + timedelta(days=i) for i in range(7)]
+    # Load saved availability of doctor
+    existing = {a.date: a.slot for a in Availability.query.filter_by(doctor_id=doctor_id).all()}
+    booked_slots = [(a.date, a.time) for a in Appointment.query.filter(Appointment.doctor_id == doctor_id, Appointment.status.in_(["Upcoming", "Completed"])).all()]
+
+
+    if request.method == 'POST':
+
+        selected_date = request.form.get("selected_date")
+        selected_slot = request.form.get("selected_slot")
+
+        if not selected_date or not selected_slot:
+            flash("Please select a slot before booking!", "danger")
+            return redirect(request.url)
+        
+        already_booked = Appointment.query.filter(Appointment.doctor_id == doctor.doctor_id, Appointment.date == selected_date, Appointment.time == selected_slot, Appointment.status == "Upcoming").first()
+
+        if already_booked:
+            flash("This slot is already booked by another patient.", "danger")
+            return redirect(request.url)
+
+        ap_existing = Appointment.query.filter_by(doctor_id=doctor.doctor_id, patient_id=patient.patient_id, date=selected_date, time=selected_slot).first()
+
+        if ap_existing:
+            if ap_existing.status == "Completed" or ap_existing.status == "Upcoming":
+                flash("You already booked this slot with this doctor.", "warning")
+                return redirect(f"/patient/{patient.patient_id}/view_availability/{doctor.doctor_id}")
+
+        new_appt = Appointment(doctor_id=doctor.doctor_id, patient_id=patient.patient_id, date=selected_date, time=selected_slot)
+        db.session.add(new_appt)
+        db.session.commit()
+
+        flash("Appointment booked successfully!", "success")
+        return redirect(f"/patient/{patient.patient_id}")
+        
+    return render_template('view_availability.html', doctor=doctor, availability=availability, time_options=time_options, next_seven_days=next_seven_days, existing=existing, patient=patient, booked_slots=booked_slots)
+  
+@app.route("/patient/<int:pat_id>/past_appointments", methods=['GET'])
+def past_appointments(pat_id):
+    patient = Patient.query.filter_by(patient_id=pat_id).first()
+    appoint = Appointment.query.filter(Appointment.patient_id==patient.patient_id, Appointment.status.in_(["Completed", "Cancelled"])).all()
+    return render_template('p_past_appoint.html', patient=patient, appoint=appoint)
+
+@app.route('/edit_patient/<int:pat_id>', methods=['GET','POST'])
+def edit_patient(pat_id):
+    patient = Patient.query.filter_by(patient_id=pat_id).first()
+    if request.method == 'POST':
+        name = request.form.get('name')
+        password = request.form.get('pwd')
+        confirm_pwd = request.form.get('confirm_pwd')
+        age = request.form.get('age')
+        gender = request.form.get('gender')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+
+        if password != confirm_pwd:
+            flash("Passwords do not match", "danger")
+            return redirect(request.url)
+
+        if not phone or not phone.isdigit() or len(phone) != 10:
+            flash("Invalid contact number — must be exactly 10 digits", "danger")
+            return redirect(request.url)
+
+        patient.name = name
+        patient.age = age
+        patient.gender = gender
+        patient.phone = phone
+        patient.address = address
+
+        if password:
+            patient.password = password
+
+        db.session.commit()
+        flash("Patient updated successfully!", "success")
+        return redirect(url_for('patient', pat_id=patient.patient_id))
+
+    return render_template('edit_patient.html', patient=patient)

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Patient Dash - view availability</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+        crossorigin="anonymous">
+        <style>
+            #canvas {
+                padding: 20px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="main" style="height: auto;">
+            <div id="canvas"> <br>
+                {% with messages = get_flashed_messages(with_categories=true) %}    
+                    {% if messages %}
+                        {% for category, msg in messages %}
+                        <div class="alert alert-{{ category }} py-1 px-2 mt-2">
+                            {{ msg }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="headings"> Available Slots for Dr. {{ doctor.name }} </h3>
+                        
+                        <a href="/patient/{{patient.patient_id}}/department/{{doctor.dept.department_id}}">go back</a>
+                </div>
+
+                <form action='/patient/{{ patient.patient_id }}/view_availability/{{ doctor.doctor_id }}' method="POST">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Slot</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for d in next_seven_days %}
+
+                            <tr>
+                                <td>{{ d.strftime('%A, %d %B %Y') }}</td>
+
+                                {% for slot in time_options %}
+                                    <td>
+                                        {% if existing.get(d) == slot %}
+                                            {% set booked = (d|string, slot) in booked_slots %}
+                                            {% if booked %}
+                                                <button class="btn btn-secondary btn-sm" disabled>{{ slot }} (Booked) </button>
+
+                                            {% else %}
+                                            <input type="radio"
+                                                name="selected_slot"
+                                                value="{{ slot }}"
+                                                id="{{ d }}-{{ slot }}"
+                                                onclick="document.getElementById('selected_date').value='{{ d }}'">
+
+                                            <label for="{{ d }}-{{ slot }}">{{ slot }}</label>
+                                            {% endif %}
+
+                                        {% else %}
+                                            <span class="text-muted">Not available</span>
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table> <br>
+
+                    <input type="hidden" id="selected_date" name="selected_date">
+
+                    <input type="submit" class="btn btn-sm btn-success" value="Book Appointment">
+                </form>
+            </div>
+            
+        </div>
+    </body>
+</html>

@@ -27,14 +27,9 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">History</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="patient_dash.html">Back</a>
+                                    <a class="nav-link" href="/patient/{{patient.patient_id}}">Back</a>
                                 </li>
                             </ul>
                             
@@ -50,35 +45,28 @@
                     <div class="container my-5">
 
                         <div id="information" class="mb-5">
-                            <h2 class="mb-3">Department of Cardiology</h2>
+                            <h2 class="mb-3">Department of {{dept.department_name}}</h2>
                             <p class="lead">
-                                The Department of Cardiology specializes in the diagnosis and treatment of heart-related conditions.
-                                Our team is dedicated to providing state-of-the-art care, ranging from preventive screenings to
-                                advanced cardiac surgeries. We focus on patient-centered care with modern facilities and expert staff.
+                                {{dept.info}}
                             </p>
 
                         </div>
 
                         <div class="d-flex align-items-center mb-3">
                             <h4 class="m-0 me-2">Our Doctors</h4>
-                            <a href="/">View all</a>
+                            
                         </div>
 
                         <table class="table table-sm border">
+                            {% for dr in doctors %}
                             <tr>
-                                <td>Mr. Smith</td>
+                                <td>{{ dr.name }}</td>
                                 <td class="text-center">
-                                    <a href="#" class="btn btn-success btn-sm">view details</a>
-                                    <a href="#" class="btn btn-success btn-sm">check avalability</a>
+                                    <a href="/patient/{{patient.patient_id}}/department/{{dept.department_id}}/{{dr.doctor_id}}" class="btn btn-success btn-sm">view details</a>
+                                    <a href="/patient/{{patient.patient_id}}/view_availability/{{dr.doctor_id}}" class="btn btn-sm btn-warning"> Check Availability </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Mrs. Gosh</td>
-                                <td class="text-center">
-                                    <a href="#" class="btn btn-success btn-sm">view details</a>
-                                    <a href="#" class="btn btn-success btn-sm">check avalability</a>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </table>
 
                 </div>

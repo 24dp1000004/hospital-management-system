@@ -37,6 +37,9 @@ class Doctor(db.Model):
     department = db.Column(db.String(), nullable = False)
     appointments = db.relationship('Appointment', backref='doctor', lazy=True)  # relationship
     dept_id= db.Column(db.Integer, db.ForeignKey('Department.department_id'))    #foreignkey
+    role = db.Column(db.String())
+    info = db.Column(db.String())
+    exp_year = db.Column(db.Integer)
 
 class Department(db.Model):
     __tablename__ = "Department"
@@ -52,8 +55,7 @@ class Appointment(db.Model):
     time = db.Column(db.String(), nullable=False)
     status = db.Column(db.String(), default='Upcoming', nullable=False)
     doctor_id = db.Column(db.Integer, db.ForeignKey('Doctor.doctor_id'))   #foreignkey
-    patent_id = db.Column(db.Integer, db.ForeignKey('Patient.patient_id'))  #foreignkey
-    # treatment = db.Column(db.Integer, db.ForeignKey('Treatment.treatment_id'))  #foreignkey
+    patient_id = db.Column(db.Integer, db.ForeignKey('Patient.patient_id'))  #foreignkey
 
 class Treatment(db.Model):
     __tablename__ = "Treatment"
