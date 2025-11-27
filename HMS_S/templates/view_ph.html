@@ -19,9 +19,11 @@
                 <!-- <h2>Patient History</h2> <br> -->
                  <div class="d-flex justify-content-between align-items-center">
                         <h3 class="headings">Patient History</h3>
-                        {% if viewer == "doctor" %}
+                        {% if session['doctor_id'] %}
                             <a href="/doctor/{{appoint.doctor_id}}">go back</a>
-                        {% else %}
+                        {% elif session['admin_id'] %}
+                            <a href="/admin_completed_appointments">go back</a>
+                        {% elif session['patient_id'] %}
                             <a href="/patient/{{appoint.patient_id}}/past_appointments">go back</a>
                         {% endif %}
                 </div> <br>

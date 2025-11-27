@@ -61,28 +61,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% set count=1 %}
+                                {% set ns = namespace(found=false, count=0) %}
+                                
                                 {% for ap in appoint %}
-                                {% if ap.status == "Upcoming" or ap.status == "Updated"%}
+                                    {% if ap %}
+                                        
+                                        {% if ap.status == "Upcoming" or ap.status == "Updated"%}
+                                        {% set ns.found = true %}
+                                        {% set ns.count = ns.count + 1 %}
+                                            <tr>
+                                                <th >{{ ns.count }}</th>
+                                                <td>{{ ap.patient.name }}</td>
+                                                <td>{{ ap.date }}</td>
+                                                <td>
+                                                    <a href="/update_patient_history/{{ap.appointment_id}}" class="btn btn-secondary btn-sm" >update</a>
+                                                </td>
+                                                <td>
+                                                    <a href="/complete_appoint/{{ap.appointment_id}}" class="btn btn-success btn-sm"> Completed </a>
+                                                    {% if ap.status == "Updated" %}
+                                                        <button class="btn btn-secondary btn-sm" disabled>Cancel</button>
+                                                    {% else %}
+                                                        <a href="{{ url_for('cancel_appoint', appoint_id=ap.appointment_id, role='doctor') }}" class="btn btn-danger btn-sm"> Cancel </a>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                
+
+                                {% if not ns.found %}
                                     <tr>
-                                        <th >{{ count }}</th>
-                                        <td>{{ ap.patient.name }}</td>
-                                        <td>{{ ap.date }}</td>
-                                        <td>
-                                            <a href="/update_patient_history/{{ap.appointment_id}}" class="btn btn-secondary btn-sm" >update</a>
-                                        </td>
-                                        <td>
-                                            <a href="/complete_appoint/{{ap.appointment_id}}" class="btn btn-success btn-sm"> Completed </a>
-                                            {% if ap.status == "Updated" %}
-                                                <button class="btn btn-secondary btn-sm" disabled>Cancel</button>
-                                            {% else %}
-                                                <a href="{{ url_for('cancel_appoint', appoint_id=ap.appointment_id, role='doctor') }}" class="btn btn-danger btn-sm"> Cancel </a>
-                                            {% endif %}
+                                        <td colspan="6" class="text-center text-muted">
+                                            No upcoming appointments
                                         </td>
                                     </tr>
                                 {% endif %}
-                                {% endfor %}
-                                {% set count = count + 1 %}
                                 
                             </tbody>
                         </table>
@@ -108,15 +122,14 @@
                                         class="accordion-collapse collapse" 
                                         data-bs-parent="#patientAccordion">
                                         
-                                        <div class="accordion-body">
+                                        <div class="accordion-body text-center">
 
                                             <table class="table table-bordered table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Diagnosis</th>
-                                                        <th>Prescription</th>
                                                         <th>Appointment</th>
+                                                        <th>History</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -124,9 +137,10 @@
                                                     {% for t in patient.treatment|sort(attribute='treatment_id', reverse=True) %}
                                                     <tr>
                                                         <td>{{ loop.index }}</td>
-                                                        <td>{{ t.diagnosis }}</td>
-                                                        <td>{{ t.prescription }}</td>
                                                         <td>{{ t.appointment.date }} at {{ t.appointment.time }}</td>
+                                                        <td>
+                                                            <a href="/view_patient_history/{{t.appointment.appointment_id}}" class="btn btn-secondary btn-sm" >view</a>
+                                                        </td>
                                                     </tr>
                                                     {% else %}
                                                     <tr>

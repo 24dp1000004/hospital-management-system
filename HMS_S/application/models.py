@@ -1,8 +1,9 @@
 from .database import db
+from datetime import datetime
 
 class Admin(db.Model):
     __tablename__ = "Admin"
-    id = db.Column(db.Integer, primary_key=True)
+    admin_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), unique=True, nullable=False)
     email = db.Column(db.String(), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
@@ -21,6 +22,7 @@ class Patient(db.Model):
     patient_type = db.Column(db.String(), default='OPD')  # OPD/IPD
     status = db.Column(db.String(), default='Active')
     consultant = db.Column(db.Integer, db.ForeignKey('Doctor.doctor_id'))  #foreignkey
+    # consultant_ref = db.relationship('Doctor', backref='patients', foreign_keys=[consultant]) #relationship: deleted user
     appointments = db.relationship('Appointment', backref='patient', lazy=True)  # relationship
     treatment = db.relationship('Treatment', backref='patient', lazy=True) #realtionship
 
@@ -34,7 +36,6 @@ class Doctor(db.Model):
     email = db.Column(db.String(), unique=True, nullable = False)
     username = db.Column(db.String(), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
-    department = db.Column(db.String(), nullable = False)
     appointments = db.relationship('Appointment', backref='doctor', lazy=True)  # relationship
     dept_id= db.Column(db.Integer, db.ForeignKey('Department.department_id'))    #foreignkey
     role = db.Column(db.String())
@@ -77,5 +78,17 @@ class Availability(db.Model):
     slot = db.Column(db.String(), nullable=False)  # 'Morning' or 'Evening'
     doctor = db.relationship('Doctor', backref='availabilities')   #relationship
 
+class DeletedUser(db.Model):
+    __tablename__ = "DeletedUser"
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_type = db.Column(db.String(), nullable=False)   # "doctor" or "patient"
+    original_id = db.Column(db.Integer, nullable=False)  # doctor_id or patient_id
+
+    name = db.Column(db.String(), nullable=False)
+    department = db.Column(db.String(), nullable=True)   # doctors only
+    consultant = db.Column(db.String(), nullable=True)           # patient only
+
+    # deleted_on = db.Column(db.DateTime, default=datetime.utcnow)
 
 
