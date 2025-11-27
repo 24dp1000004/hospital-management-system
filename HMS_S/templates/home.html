@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Login Form</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+        crossorigin="anonymous">
+
+        <style>
+            .split {
+                height: 100vh;   
+                display: flex;
+            }
+            .left, .right {
+                flex: 1;      
+                /* display: flex; */
+                /* justify-content: center; */
+                align-items: center;
+                padding: 60px;
+            }
+            .left {
+                background: #f0f6ff;
+            }
+            .right {
+                background: #e6ffee;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main" style="width: 80%; height: 100px;" class="mx-auto">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/"><h1>Carex Hospital</h1></a>
+                    
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            
+                            <li>
+                                <a class="nav-link active" aria-current="page" href="/admin">Admin Login</a>
+                            </li>
+                            
+                    </div>
+                </div>
+            </nav>
+
+            <div class="split">
+                <div class="left text-center">
+                    <h3>For Doctors</h3>
+                    <hr>
+                    <p>Manage your patients</p>
+                    <p>View your appointments</p>
+                    <p>View your prescriptions</p>
+                    <p>Manage appointments</p>
+                    <p>Provide weekly availability</p> <br>
+                    <a href="/login">Login</a><br>
+                </div>
+                <div class="right text-center">
+                    <div>
+                        <h3>For Patients</h3>
+                        <hr>
+                        <p>Book precise Appointments</p>
+                        <p>Manage/View your Appointments</p>
+                        <p>View your prescriptions</p>
+                        <p>Check doctor's schedule</p>
+                        <p>Easily edit profile</p> <br>
+                        <p style="display: flex; justify-content: center;">
+                            <a href="/login">Login /</a><br>
+                            <a href="/register">Register</a><br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

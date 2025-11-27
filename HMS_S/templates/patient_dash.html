@@ -8,7 +8,7 @@
         crossorigin="anonymous">
 
         <style>
-            .headings{
+            #canvas , .headings{
                 padding: 15px;
             }  
         </style>
@@ -30,29 +30,30 @@
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Welcome {{ this_patient.name }}</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
+                        <a class="navbar-brand" href="/patient/{{this_patient.patient_id}}">Welcome {{ this_patient.name }}</a>
+                        
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" aria-current="page" href="#">Home</a>
+                                </li> -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="/edit_patient/{{this_patient.patient_id}}">Profile</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{url_for('past_appointments', pat_id=this_patient.patient_id)}}">History</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Logout</a>
+                                <li>
+                                    <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
                                 </li>
+                                
                             </ul>
-                            
-                            <form class="d-flex" role="search">
-                                <input class="form-control me-2" type="search" placeholder="doctor, department" aria-label="Search"/>
-                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            <form class="d-flex" role="search" method="GET" action="/patient_search/{{this_patient.patient_id}}">
+                                <input class="form-control me-2" 
+                                    type="search" 
+                                    name="query" 
+                                    placeholder="Search doctor or department">
+                                <button class="btn btn-outline-primary" type="submit">Search</button>
                             </form>
                         </div>
                     </div>
@@ -100,7 +101,7 @@
                                         <tr>
                                             <td>{{ ns.count }}</td>
                                             <td>Dr. {{ a.doctor.name }}</td>
-                                            <td>{{ a.doctor.department }}</td>
+                                            <td>{{ a.doctor.dept.department_name }}</td>
                                             <td>{{ a.date }}</td>
                                             <td>{{ a.time }}</td>
                                             <td>

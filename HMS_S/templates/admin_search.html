@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Search Results</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+        crossorigin="anonymous">
+        <style>
+            #canvas {
+                padding: 20px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div id="canvas"> <br>
+                <h3>Search Results for: "{{ query }}"</h3> <br>
+
+                <h4>Patients</h4>
+                {% if patients %}
+                <table class="table table-bordered">
+                    <tr><th>ID</th><th>Name</th><th>Contact</th><th>Action</th></tr>
+                    {% for p in patients %}
+                    <tr>
+                        <td>{{ p.patient_id }}</td>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.phone }}</td>
+                        <td>
+                            <a href="/registered_patients/{{p.patient_id}}" class="btn btn-info btn-sm">edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <p>No patient found.</p>
+                {% endif %}
+
+                <br> <hr> <br>
+
+                <h4>Doctors</h4>
+                {% if doctors %}
+                <table class="table table-bordered">
+                    <tr><th>ID</th><th>Name</th><th>Specialization</th><th>Action</th></tr>
+                    {% for d in doctors %}
+                    <tr>
+                        <td>{{ d.doctor_id }}</td>
+                        <td>{{ d.name }}</td>
+                        <td>{{ d.dept.department_name }}</td>
+                        <td>
+                            <a href="/edit_doctor/{{d.doctor_id}}" class="btn btn-info btn-sm">edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table> <br>
+                {% else %}
+                <p>No doctor found.</p> <br>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </body>
+</html>
+
