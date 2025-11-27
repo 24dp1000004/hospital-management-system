@@ -436,3 +436,32 @@ def admin_search():
         db.func.lower(Department.department_name).contains(q)).all()
 
     return render_template("admin_search.html", query=q, patients=patients, doctors=doctors)
+
+@app.route("/patient_search/<int:pat_id>", methods=["GET"])
+def patient_search(pat_id):
+    this_patient = Patient.query.filter_by(patient_id=pat_id).first()
+    departments = Department.query.all()
+    q = request.args.get("query")
+
+    if not q:
+        return redirect(url_for('patient', pat_id=pat_id))
+
+    q = q.lower()
+
+    doctors = Doctor.query.join(Department).filter(
+        db.or_(
+            db.func.lower(Doctor.name).contains(q),
+            db.func.lower(Department.department_name).contains(q)
+        )
+    ).all()
+
+    return render_template("patient_search.html", query=q, doctors=doctors, this_patient=this_patient, departments=departments)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect("/") 
+
+@app.route("/")
+def home():
+    return render_template("home.html")

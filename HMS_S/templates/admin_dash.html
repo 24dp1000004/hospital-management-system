@@ -38,20 +38,20 @@
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Welcome Admin</a>
+                        <a class="navbar-brand" href="/admin">Welcome Admin</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                                 </li>
                                 <li>
                                     <a class="nav-link active" aria-current="page" href="/deleted_users">Past Users</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link active" aria-current="page" href="#">Logout</a>
+                                    <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
                                 </li>
                             </ul>
                             <form class="d-flex" role="search" method="GET" action="/admin_search">
@@ -77,8 +77,8 @@
                         <table class="table table-sm border">
                             {% for dr in all_doctors %}
                             <tr>
-                                <td>{{dr.name}}</td>
-                                <td class="text-end" >
+                                <td>{{loop.index}}.  {{dr.name}}</td>
+                                <td class="text-center" >
                                     <a href="/edit_doctor/{{dr.doctor_id}}" class="btn btn-outline-info btn-sm">edit</a>
                                     <button type="button" 
                                             class="btn btn-outline-danger btn-sm" 
@@ -124,8 +124,8 @@
                         <table class="table table-sm border">
                             {% for patient in all_patients%}
                             <tr>
-                                <td>{{ patient.name }}</td>
-                                <td class="text-end">
+                                <td>{{loop.index}}.  {{ patient.name }}</td>
+                                <td class="text-center">
                                     <a href="/registered_patients/{{patient.patient_id}}" class="btn btn-outline-info btn-sm">edit</a>
                                     <button type="button" 
                                         class="btn btn-outline-danger btn-sm"
@@ -168,7 +168,7 @@
                     
                     <div class="d-flex align-items-center">
                         <h3 class="headings">Upcoming Appointments</h3>
-                        <a href="/admin_completed_appointments" class="btn btn-outline-info btn-sm mx-2">View all</a>
+                        <a href="/admin_completed_appointments" class="btn btn-dark btn-sm mx-2">View all</a>
                     </div>
                     <div id="table">
                         <table class="table table-sm border">
@@ -209,7 +209,7 @@
                                     </tr>
                                     {% endif %}
                             </tbody>
-                        </table>
+                        </table> <br>
 
                     </div>
 
