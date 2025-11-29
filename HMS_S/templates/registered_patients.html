@@ -39,38 +39,38 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="inputname" class="form-label">Name</label>
+                            <label for="inputname" class="form-label">Name:</label>
                             <input type="text" class="form-control" id="inputname" value="{{patient.name}}" name="name">
                         </div>
                     
                         <div class="col-md-6">
-                            <label for="inputEmail4" class="form-label">Email</label>
+                            <label for="inputEmail4" class="form-label">Email:</label>
                             <input type="email" class="form-control" id="inputEmail4" value="{{patient.email}}" readonly>
                         </div>
                     </div> <br>
                     <div class="row gy-2">
                         <div class="col-md-4">
-                            <label for="user" class="form-label">Username</label>
+                            <label for="user" class="form-label">Username:</label>
                             <input type="text" class="form-control" id="user" name="uname" value="{{patient.username}}" readonly>
                         </div>
                     </div> <br>
                     <div class="row gy-2" >
                         <div class="col-md-7">
-                            <label for="inputPassword4" class="form-label">New Password</label>
+                            <label for="inputPassword4" class="form-label">New Password:</label>
                             <input type="password" class="form-control" id="inputPassword4" name="pwd">
                         </div>
                         <div class="col-md-4">
-                            <label for="inputPasswordConfirm" class="form-label">Confirm New Password</label>
+                            <label for="inputPasswordConfirm" class="form-label">Confirm New Password:</label>
                             <input type="password" class="form-control" id="inputPasswordConfirm" name="confirm_pwd">
                         </div>
                     </div> <br>
                     <div class="row gy-2">
                         <div class="col-2">
-                            <label for="age" class="form-label">Age</label>
+                            <label for="age" class="form-label">Age:</label>
                             <input type="text" class="form-control" id="age" value="{{patient.age}}" name="age">
                         </div>
                         <div class="col-4">
-                            <label for="gen" class="form-label">Gender</label>
+                            <label for="gen" class="form-label">Gender:</label>
                             <select id="gen" name="gender" class="form-select">
                             <option selected>Choose...</option>
                             <option value="Male" {% if patient.gender == "Male" %}selected{% endif %}>Male</option>
@@ -78,13 +78,13 @@
                             </select>
                         </div>
                         <div class="col-3">
-                            <label for="phone" class="form-label">Contact</label>
+                            <label for="phone" class="form-label">Contact:</label>
                             <input type="text" class="form-control" id="phone" name="phone" value="{{patient.phone}}" pattern="\d{10}" minlength="10" maxlength="10" title="Phone number must be exactly 10 digits">
                         </div>
                     </div> <br>
                     <div class="row gy-2">
                         <div class="col-4">
-                            <label for="type" class="form-label">Patient Type</label>
+                            <label for="type" class="form-label">Patient Type:</label>
                             <select id="type" name="type" class="form-select">
                             <option selected>Choose...</option>
                             <option value="IPD" {% if patient.patient_type == "IPD" %}selected{% endif %}>IPD</option>
@@ -92,7 +92,7 @@
                             </select>
                         </div>
                         <div class="col-4">
-                            <label for="sta" class="form-label">Status</label>
+                            <label for="sta" class="form-label">Status:</label>
                             <select id="sta" name="status" class="form-select">
                             <option selected>Choose...</option>
                             <option value="Active" {% if patient.status == "Active" %}selected{% endif %}>Active</option>
@@ -102,8 +102,8 @@
                     </div> <br>
 
                     <div class="col-12">
-                        <label for="inputAddress" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="inputAddress" value={{patient.address}} placeholder="1234 Main St" name="address">
+                        <label for="inputAddress" class="form-label">Address:</label>
+                        <textarea class="form-control" id="inputAddress" style="height: 60px;" name="address" > {{ patient.address }}</textarea>
                     </div> 
                     <br>
                     <div class="row gy-3">
