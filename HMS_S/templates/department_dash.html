@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Department of Cardiology</title>
+        <title>Department of {{dept.department_name}}</title>
         <link rel="stylesheet" href="/static/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
@@ -11,6 +11,11 @@
             .headings{
                 padding: 15px;
             }  
+            #canvas{
+                padding: 20px;
+                height: auto;
+                width: 70%;
+            }
         </style>
     </head>
 
@@ -18,10 +23,10 @@
         <div id="main">
             <div id="canvas">
 
-                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <nav  class="navbar navbar-expand-lg n">
 
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Department of Cardiology</a>
+                    <div id="nav" class="container-fluid">
+                        <a class="navbar-brand" href="#">Department of {{dept.department_name}}</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -32,11 +37,6 @@
                                     <a class="nav-link" href="/patient/{{patient.patient_id}}">Back</a>
                                 </li>
                             </ul>
-                            
-                            <form class="d-flex" role="search">
-                                <input class="form-control me-2" type="search" placeholder="doctor, department" aria-label="Search"/>
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
                         </div>
                     </div>
                 </nav>
@@ -57,10 +57,10 @@
                             
                         </div>
 
-                        <table class="table table-sm border">
+                        <table class="table table-sm border table-striped">
                             {% for dr in doctors %}
                             <tr>
-                                <td>{{ dr.name }}</td>
+                                <td>Dr. {{ dr.name }}</td>
                                 <td class="text-center">
                                     <a href="/patient/{{patient.patient_id}}/department/{{dept.department_id}}/{{dr.doctor_id}}" class="btn btn-success btn-sm">view details</a>
                                     <a href="/patient/{{patient.patient_id}}/view_availability/{{dr.doctor_id}}" class="btn btn-sm btn-warning"> Check Availability </a>

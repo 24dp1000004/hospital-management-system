@@ -14,6 +14,7 @@
             #canvas{
                 width: 70%;
                 height: auto;
+                padding: 20px;
             }
         </style>
     </head>
@@ -24,11 +25,8 @@
 
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
-                    <div class="container-fluid">
+                    <div id="nav" class="container-fluid">
                         <a class="navbar-brand">History</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon">what is this</span>
-                        </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 
@@ -49,7 +47,7 @@
                             
                         </div>
 
-                        <table class="table border">
+                        <table class="table border table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Sr No.</th>
@@ -62,29 +60,44 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% set ns = namespace(found=false, count=0) %}
                                 {% for a in appoint %}
-                                <tr>
-                                    <th scope="row">{{ loop.index }}</th>
-                                    <!-- {% set dr = a.doctor %}
-                                    {% set dept = dr.dept.department_name %} -->
-                                    <td>{{ a.appointment_id }}</td>
-                                    <td>{{ a.doctor.name }}</td>
-                                    <td>{{ a.doctor.dept.department_name }}</td>
-                                    <td>{{ a.date }}</td>
-                                    <td>{{ a.time }}</td>
-                                    {% if a.status == "Completed" %}
-                                    <td class="text-center">
-                                        
-                                        <a href="/view_patient_history/{{a.appointment_id}}" class="btn btn-success btn-sm">view details</a>
-                                        
-                                    </td>
+                                    {% if a %}
+                                    {% set ns.count = ns.count + 1 %}
+                                    {% set ns.found = true %}
                                     
-                                    {% elif a.status == "Cancelled" %}
-                                        <td class="text-center" > Cancelled</td>
-                                    
+                                    <tr>
+                                        <th scope="row">{{ ns.count }}</th>
+                                        <!-- {% set dr = a.doctor %}
+                                        {% set dept = dr.dept.department_name %} -->
+                                        <td>{{ a.appointment_id }}</td>
+                                        <td>{{ a.doctor.name }}</td>
+                                        <td>{{ a.doctor.dept.department_name }}</td>
+                                        <td>{{ a.date }}</td>
+                                        <td>{{ a.time }}</td>
+                                        {% if a.status == "Completed" %}
+                                        <td class="text-center">
+                                            
+                                            <a href="/view_patient_history/{{a.appointment_id}}" class="btn btn-success btn-sm">view details</a>
+                                            
+                                        </td>
+                                        
+                                        {% elif a.status == "Cancelled" %}
+                                            <td class="text-center" > Cancelled</td>
+                                        
+                                        {% endif %}
+
+                                    </tr>
                                     {% endif %}
-                                </tr>
                                 {% endfor %}
+
+                                {% if not ns.found %}
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">
+                                        No past appointments
+                                    </td>
+                                </tr>
+                                {% endif %}
                             </tbody>
                         </table>
 

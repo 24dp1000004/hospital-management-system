@@ -27,6 +27,10 @@ h1{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     
 }
+#nav{
+    background: #bcdcde;
+    height: 50px;
+}
 
 .slot-radio {
     display: none;

@@ -48,13 +48,13 @@
                             <input type="email" class="form-control" id="inputEmail4" value="{{patient.email}}" readonly>
                         </div>
                     </div> <br>
-                    <div class="row">
+                    <div class="row gy-2">
                         <div class="col-md-4">
                             <label for="user" class="form-label">Username</label>
                             <input type="text" class="form-control" id="user" name="uname" value="{{patient.username}}" readonly>
                         </div>
                     </div> <br>
-                    <div class="row">
+                    <div class="row gy-2" >
                         <div class="col-md-7">
                             <label for="inputPassword4" class="form-label">New Password</label>
                             <input type="password" class="form-control" id="inputPassword4" name="pwd">
@@ -64,7 +64,7 @@
                             <input type="password" class="form-control" id="inputPasswordConfirm" name="confirm_pwd">
                         </div>
                     </div> <br>
-                    <div class="row">
+                    <div class="row gy-2">
                         <div class="col-2">
                             <label for="age" class="form-label">Age</label>
                             <input type="text" class="form-control" id="age" value="{{patient.age}}" name="age">
@@ -82,24 +82,38 @@
                             <input type="text" class="form-control" id="phone" name="phone" value="{{patient.phone}}" pattern="\d{10}" minlength="10" maxlength="10" title="Phone number must be exactly 10 digits">
                         </div>
                     </div> <br>
+                    <div class="row gy-2">
+                        <div class="col-4">
+                            <label for="type" class="form-label">Patient Type</label>
+                            <select id="type" name="type" class="form-select">
+                            <option selected>Choose...</option>
+                            <option value="IPD" {% if patient.patient_type == "IPD" %}selected{% endif %}>IPD</option>
+                            <option value="OPD" {% if patient.patient_type == "OPD" %}selected{% endif %}>OPD</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label for="sta" class="form-label">Status</label>
+                            <select id="sta" name="status" class="form-select">
+                            <option selected>Choose...</option>
+                            <option value="Active" {% if patient.status == "Active" %}selected{% endif %}>Active</option>
+                            <option value="Discharged" {% if patient.status == "Discharged" %}selected{% endif %}>Discharged</option>
+                            </select>
+                        </div>
+                    </div> <br>
+
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Address</label>
                         <input type="text" class="form-control" id="inputAddress" value={{patient.address}} placeholder="1234 Main St" name="address">
-                    </div> <br>
-                    
-                    <div class="col-12">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck">
-                        <label class="form-check-label" for="gridCheck">
-                            I have given all correct details.
-                        </label>
-                    </div> <br> <br>
-
-                    <div class="text-center">
-                        <input type="submit" class="btn btn-success" value="Save">
+                    </div> 
+                    <br>
+                    <div class="row gy-3">
+                        <div class="text-center">
+                            <input type="submit" class="btn btn-success" value="Save">
+                        </div> <br>
                     </div>
+                    
 
-                </form>
+                </form> <br>
             </div>
         </div>  
     </body>

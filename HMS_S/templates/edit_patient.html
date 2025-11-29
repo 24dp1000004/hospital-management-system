@@ -28,7 +28,7 @@
 
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
-                    <div class="container-fluid">
+                    <div id="nav" class="container-fluid">
                         <a class="navbar-brand" href="#">Hello {{patient.name}}</a>
                         
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -48,7 +48,7 @@
                      
                     <form  class="row g-3" action="/edit_patient/{{patient.patient_id}}" method="post">
 
-                        <div class="row">
+                        <div class="row gy-1">
                             <div class="col-md-6">
                                 <label for="inputname" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="inputname" value="{{patient.name}}" name="name">
@@ -58,14 +58,14 @@
                                 <label for="inputEmail4" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="inputEmail4" value="{{patient.email}}" readonly>
                             </div>
-                        </div> <br>
-                        <div class="row">
+                        </div> <br> <br>
+                        <div class="row gy-2">
                             <div class="col-md-4">
                                 <label for="user" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="user" name="uname" value="{{patient.username}}" readonly>
                             </div>
                         </div> <br>
-                        <div class="row">
+                        <div class="row row gy-2">
                             <div class="col-md-7">
                                 <label for="inputPassword4" class="form-label">New Password</label>
                                 <input type="password" class="form-control" id="inputPassword4" name="pwd">
@@ -75,7 +75,7 @@
                                 <input type="password" class="form-control" id="inputPasswordConfirm" name="confirm_pwd" required>
                             </div>
                         </div> <br>
-                        <div class="row">
+                        <div class="row row gy-2">
                             <div class="col-2">
                                 <label for="age" class="form-label">Age</label>
                                 <input type="text" class="form-control" id="age" value="{{patient.age}}" name="age">

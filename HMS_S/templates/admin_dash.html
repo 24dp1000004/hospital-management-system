@@ -37,7 +37,7 @@
 
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
-                    <div class="container-fluid">
+                    <div id="nav" class="container-fluid">
                         <a class="navbar-brand" href="/admin">Welcome Admin</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -74,7 +74,7 @@
                     </div>
 
                     <div id="table">
-                        <table class="table table-sm border">
+                        <table class="table table-sm border table-striped">
                             {% for dr in all_doctors %}
                             <tr>
                                 <td>{{loop.index}}.  {{dr.name}}</td>
@@ -121,7 +121,7 @@
 
                     <h3 class="headings"> Registered Patients</h3>
                     <div id="table">
-                        <table class="table table-sm border">
+                        <table class="table table-sm border table-striped">
                             {% for patient in all_patients%}
                             <tr>
                                 <td>{{loop.index}}.  {{ patient.name }}</td>
@@ -171,7 +171,7 @@
                         <a href="/admin_completed_appointments" class="btn btn-dark btn-sm mx-2">View all</a>
                     </div>
                     <div id="table">
-                        <table class="table table-sm border">
+                        <table class="table table-sm border table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th scope="col">Sr No.</th>

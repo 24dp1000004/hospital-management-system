@@ -347,6 +347,8 @@ def registered_patients(pat_id):
         gender = request.form.get('gender')
         phone = request.form.get('phone')
         address = request.form.get('address')
+        patient_type = request.form.get('type')
+        status = request.form.get('status')
 
         if not phone or not phone.isdigit() or len(phone) != 10:
             flash("Invalid contact number — must be exactly 10 digits", "danger")
@@ -357,6 +359,8 @@ def registered_patients(pat_id):
         patient.gender = gender
         patient.phone = phone
         patient.address = address
+        patient.patient_type = patient_type
+        patient.status = status
 
         if password or confirm_pwd:
             if password != confirm_pwd:
@@ -392,11 +396,15 @@ def delete_doctor(doctor_id):
 @app.route('/delete_patient/<int:patient_id>')
 def delete_patient(patient_id):
     patient = Patient.query.filter_by(patient_id=patient_id).first()
+    
     consultant_doc = Doctor.query.filter_by(doctor_id=patient.consultant).first()
 
     deleted = DeletedUser(user_type="patient",original_id=patient.patient_id, name=patient.name,consultant=consultant_doc.name)
 
     db.session.add(deleted)
+
+    Appointment.query.filter_by(patient_id=patient_id).delete()
+    Treatment.query.filter_by(patient_id=patient_id).delete()
 
     db.session.delete(patient)
     db.session.commit()
@@ -419,17 +427,18 @@ def deleted_users():
 @app.route("/admin_search", methods=["GET"])
 def admin_search():
     q = request.args.get("query")
-
-    
     if not q:
         return redirect('/admin')
 
     q = q.lower()
 
     patients = Patient.query.filter(
-        db.func.lower(Patient.name).contains(q) | 
-        (Patient.patient_id.contains(q)) |
-        (Patient.phone.contains(q)) ).all()
+        db.or_(
+            db.func.lower(Patient.name).contains(q),
+            (Patient.patient_id.contains(q)),
+            (Patient.phone.contains(q)) 
+        )
+    ).all()
 
     doctors = Doctor.query.join(Department).filter(
         db.func.lower(Doctor.name).contains(q) | 

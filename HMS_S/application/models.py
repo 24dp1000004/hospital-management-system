@@ -75,15 +75,15 @@ class Availability(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, db.ForeignKey('Doctor.doctor_id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    slot = db.Column(db.String(), nullable=False)  # 'Morning' or 'Evening'
+    slot = db.Column(db.String(), nullable=False)  
     doctor = db.relationship('Doctor', backref='availabilities')   #relationship
 
 class DeletedUser(db.Model):
     __tablename__ = "DeletedUser"
     id = db.Column(db.Integer, primary_key=True)
 
-    user_type = db.Column(db.String(), nullable=False)   # "doctor" or "patient"
-    original_id = db.Column(db.Integer, nullable=False)  # doctor_id or patient_id
+    user_type = db.Column(db.String(), nullable=False)   
+    original_id = db.Column(db.Integer, nullable=False) 
 
     name = db.Column(db.String(), nullable=False)
     department = db.Column(db.String(), nullable=True)   # doctors only

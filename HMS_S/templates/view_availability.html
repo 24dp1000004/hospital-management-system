@@ -31,7 +31,7 @@
                         <h3 class="headings"> Available Slots for Dr. {{ doctor.name }} </h3>
                         
                         <a href="/patient/{{patient.patient_id}}/department/{{doctor.dept.department_id}}">go back</a>
-                </div>
+                </div> <br>
 
                 <form action='/patient/{{ patient.patient_id }}/view_availability/{{ doctor.doctor_id }}' method="POST">
                     <table class="table table-bordered">

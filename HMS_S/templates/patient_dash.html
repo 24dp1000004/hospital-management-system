@@ -29,7 +29,7 @@
 
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
-                    <div class="container-fluid">
+                    <div id="nav" class="container-fluid">
                         <a class="navbar-brand" href="/patient/{{this_patient.patient_id}}">Welcome {{ this_patient.name }}</a>
                         
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -63,7 +63,7 @@
 
                     <h3 class="headings"> Departments / Specializations</h3>
                     <div id="table text-center">
-                        <table class="table table-sm border">
+                        <table class="table table-sm border table-striped">
                             {% for dept in departments %}
                             <tr>
                                 <td>{{dept.department_name}}</td>
@@ -79,7 +79,7 @@
                     
                     <h3 class="headings">Upcoming Appointments</h3>
                     <div id="table">
-                        <table class="table table-sm border">
+                        <table class="table table-sm border table-striped">
                             <thead>
                                 <tr>
                                     <th>Sr No.</th>
