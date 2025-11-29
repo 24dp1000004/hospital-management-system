@@ -77,7 +77,7 @@
                         <table class="table table-sm border table-striped">
                             {% for dr in all_doctors %}
                             <tr>
-                                <td>{{loop.index}}.  {{dr.name}}</td>
+                                <td>{{loop.index}}. Dr. {{dr.name}}</td>
                                 <td class="text-center" >
                                     <a href="/edit_doctor/{{dr.doctor_id}}" class="btn btn-outline-info btn-sm">edit</a>
                                     <button type="button" 

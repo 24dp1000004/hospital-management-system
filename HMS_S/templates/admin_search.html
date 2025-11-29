@@ -50,7 +50,7 @@
                     {% for d in doctors %}
                     <tr>
                         <td>{{ d.doctor_id }}</td>
-                        <td>{{ d.name }}</td>
+                        <td>Dr. {{ d.name }}</td>
                         <td>{{ d.dept.department_name }}</td>
                         <td>
                             <a href="/edit_doctor/{{d.doctor_id}}" class="btn btn-info btn-sm">edit</a>
